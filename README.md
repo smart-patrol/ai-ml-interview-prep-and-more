@@ -10,7 +10,7 @@ DL foundations
 
 **Grokking the Coding Interview**
 
-Some parts from Educative.io](https://www.educative.io/) (which is awesome) Grokking the Coding Interivew.
+Some parts from [Educative.io](https://www.educative.io/) (which is awesome) Grokking the Coding Interivew.
 
 **Interviews**
 
