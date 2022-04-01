@@ -1,9 +1,10 @@
 from typing import List
 import math
 
-def count_rotations(arr:List[int]) -> int:
+
+def count_rotations(arr: List[int]) -> int:
     """
-    Given an array of numbers which is sorted in ascending order and is 
+    Given an array of numbers which is sorted in ascending order and is
     rotated k times around a pivot, find k.
     You can assume that the array does not have any duplicates.
     """
@@ -11,32 +12,34 @@ def count_rotations(arr:List[int]) -> int:
     right = len(arr) - 1
 
     while left < right:
-        mid = left +  (right-left) // 2
+        mid = left + (right - left) // 2
 
         # if mid is greater than the next element
-        if mid < right and arr[mid] > arr[mid+1]:
-            return mid+1
+        if mid < right and arr[mid] > arr[mid + 1]:
+            return mid + 1
 
         # if mid is less than the previous element
-        if mid > left and arr[mid] < arr[mid-1]:
+        if mid > left and arr[mid] < arr[mid - 1]:
             return mid
 
         if arr[left] < arr[mid]:  # left side is sorted so pivot on the right side
             left = mid + 1
         else:  # right side is sorted so pivot on the left side
-            right  = mid - 1
-        
+            right = mid - 1
+
     return 0
 
+
 assert count_rotations([10, 15, 1, 3, 8]) == 2
-assert count_rotations([4, 5, 7, 9, 10, -1, 2] ) == 5
+assert count_rotations([4, 5, 7, 9, 10, -1, 2]) == 5
 assert count_rotations([1, 3, 8, 10]) == 0
 
-def search_rotated_array(arr:List[int], key:int) -> int:
+
+def search_rotated_array(arr: List[int], key: int) -> int:
     """
     Given an array of numbers which is sorted in ascending order and also rotated by some arbitrary number, find if a given key is present in it.
-    
-    Write a function to return the index of the key in the rotated array. 
+
+    Write a function to return the index of the key in the rotated array.
     If the key is not present, return -1.
     You can assume duplicates are possible.
     """
@@ -46,41 +49,41 @@ def search_rotated_array(arr:List[int], key:int) -> int:
         mid = left + (right - left) // 2
         if arr[mid] == key:
             return mid
-        
+
         # if there are duplicates
         if arr[left] == arr[mid] and arr[right] == arr[mid]:
             left += 1
             right -= 1
             continue
-        
-        if arr[left] <= arr[mid]: # left side is sorted in ascending order
+
+        if arr[left] <= arr[mid]:  # left side is sorted in ascending order
             if key >= arr[left] and key < arr[mid]:
                 right = mid - 1
             else:
                 left = mid + 1
-        else: # right side is sorted in ascending order
+        else:  # right side is sorted in ascending order
             if key > arr[mid] and key <= arr[right]:
                 left = mid + 1
             else:
                 right = mid - 1
-        
-    return -1
-    
 
-assert search_rotated_array([10, 15, 1, 3, 8], 15) == 1 
+    return -1
+
+
+assert search_rotated_array([10, 15, 1, 3, 8], 15) == 1
 assert search_rotated_array([4, 5, 7, 9, 10, -1, 2], 10) == 4
 
 
-def search_bitonic_array(arr: List[int], key:int) -> int:
+def search_bitonic_array(arr: List[int], key: int) -> int:
     """
-    Given a Bitonic array, find if a given key is present in it. 
-    An array is considered bitonic if it is monotonically increasing and then monotonically decreasing. 
+    Given a Bitonic array, find if a given key is present in it.
+    An array is considered bitonic if it is monotonically increasing and then monotonically decreasing.
     Monotonically increasing or decreasing means that for any index i in the array arr[i] != arr[i+1].
     Write a function to return the index of the key. If the key is not present, return -1.
     """
 
     # first find the max element in the array return it's index
-    def find_max(arr:List[int]) -> int:
+    def find_max(arr: List[int]) -> int:
         start, end = 0, len(arr) - 1
         while start < end:
             mid = start + (end - start) // 2
@@ -91,8 +94,7 @@ def search_bitonic_array(arr: List[int], key:int) -> int:
         # at the end of the while loop, 'start == end'
         return start
 
-    
-    def binary_search_helper(arr:List[int], key:int, start:int, end:int) -> int:
+    def binary_search_helper(arr: List[int], key: int, start: int, end: int) -> int:
         while start <= end:
             mid = int(start + (end - start) / 2)
 
@@ -101,7 +103,7 @@ def search_bitonic_array(arr: List[int], key:int) -> int:
 
             if arr[start] < arr[end]:  # ascending order
                 if key < arr[mid]:
-                        end = mid - 1
+                    end = mid - 1
                 else:  # key > arr[mid]
                     start = mid + 1
             else:  # descending order
@@ -112,7 +114,7 @@ def search_bitonic_array(arr: List[int], key:int) -> int:
 
         return -1  # element is not found
 
-    max_index = find_max(arr) # max value index
+    max_index = find_max(arr)  # max value index
     # search in ascending order for key
     key_index = binary_search_helper(arr, key, 0, max_index)
     if key_index != -1:
@@ -120,12 +122,14 @@ def search_bitonic_array(arr: List[int], key:int) -> int:
     # search in descending order for key
     return binary_search_helper(arr, key, max_index + 1, len(arr) - 1)
 
+
 assert search_bitonic_array([1, 3, 8, 4, 3], 4) == 3
 assert search_bitonic_array([3, 8, 3, 1], 8) == 1
 assert search_bitonic_array([1, 3, 8, 12], 12) == 3
 assert search_bitonic_array([10, 9, 8], 10) == 0
 
-def find_max_in_bitonic_array(arr:List[int]) -> int:
+
+def find_max_in_bitonic_array(arr: List[int]) -> int:
     left = 0
     right = len(arr) - 1
 
@@ -138,18 +142,16 @@ def find_max_in_bitonic_array(arr:List[int]) -> int:
 
     return arr[left]
 
+
 assert find_max_in_bitonic_array([1, 3, 8, 12, 4, 2]) == 12
 assert find_max_in_bitonic_array([3, 8, 3, 1]) == 8
 assert find_max_in_bitonic_array([1, 3, 8, 12]) == 12
-assert find_max_in_bitonic_array([10, 9, 8])  == 10
+assert find_max_in_bitonic_array([10, 9, 8]) == 10
 
 
-
-
-
-def search_min_diff_element(arr:List[int], key:int) -> int:
+def search_min_diff_element(arr: List[int], key: int) -> int:
     """
-    Given an array of numbers sorted in ascending order, find the element in 
+    Given an array of numbers sorted in ascending order, find the element in
     the array that has the minimum difference with the given key.
     """
     if key < arr[0]:
@@ -175,6 +177,7 @@ def search_min_diff_element(arr:List[int], key:int) -> int:
         return arr[start]
     return arr[end]
 
+
 assert search_min_diff_element([4, 6, 10], 7) == 6
 assert search_min_diff_element([4, 6, 10], 4) == 4
 assert search_min_diff_element([1, 3, 8, 10, 15], 12) == 10
@@ -182,17 +185,16 @@ assert search_min_diff_element([4, 6, 10], 17) == 10
 
 
 class ArrayReader:
+    def __init__(self, arr):
+        self.arr = arr
 
-  def __init__(self, arr):
-    self.arr = arr
-
-  def get(self, index):
-    if index >= len(self.arr):
-      return math.inf
-    return self.arr[index]
+    def get(self, index):
+        if index >= len(self.arr):
+            return math.inf
+        return self.arr[index]
 
 
-def search_in_infinite_array(reader:'ArrayReader', key: int) -> int:
+def search_in_infinite_array(reader: "ArrayReader", key: int) -> int:
     """
     Given an array of sorted numbers, find a given number 'key'.
     The array has infinite size, i.e. it wraps around.
@@ -204,14 +206,14 @@ def search_in_infinite_array(reader:'ArrayReader', key: int) -> int:
 
     while reader.get(end) < key:
         new_start = end + 1
-        end += (end - start+ 1) * 2
+        end += (end - start + 1) * 2
         start = new_start
-    
+
     return binary_search_reader(reader, key, start, end)
 
 
 def binary_search_reader(reader, key, start, end):
-    
+
     while start <= end:
         mid = start + (end - start) // 2
         if key < reader.get(mid):
@@ -230,7 +232,6 @@ assert search_in_infinite_array(reader, 11) == -1
 reader = ArrayReader([1, 3, 8, 10, 15])
 assert search_in_infinite_array(reader, 15) == 4
 assert search_in_infinite_array(reader, 200) == -1
-
 
 
 def find_range(arr: List[int], key: int) -> List[int]:
@@ -387,5 +388,5 @@ def binary_search(arr: List[int], key: int) -> int:
 
 assert binary_search([4, 6, 10], 10) == 2
 assert binary_search([1, 2, 3, 4, 5, 6, 7], 5) == 4
-#assert binary_search([10, 6, 4], 10) == 0
-#assert binary_search([10, 6, 4], 4) == 
+# assert binary_search([10, 6, 4], 10) == 0
+# assert binary_search([10, 6, 4], 4) ==

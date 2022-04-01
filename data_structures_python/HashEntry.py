@@ -1,5 +1,5 @@
 class HashEntry:
-    def __init__(self,key,data):
+    def __init__(self, key, data):
         self.key = key
         self.value = data
         self.next = None

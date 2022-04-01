@@ -1,5 +1,6 @@
 from HashEntry import HashEntry
 
+
 class HashTable:
     def __init__(self):
         # size of the hash table
@@ -13,7 +14,7 @@ class HashTable:
     # Helper functions
     def get_size(self):
         return self.size
-    
+
     def is_empty(self):
         return self.size == 0
 

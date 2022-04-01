@@ -16,7 +16,8 @@ def bigrams(text: str) -> List[str]:
     ]
     return bigrams
 
-def trigrams(text:str) -> List[str]:
+
+def trigrams(text: str) -> List[str]:
     """
     Create trigrams from a sentence
     """
@@ -35,13 +36,13 @@ def clean_text(sentence: str) -> str:
     Return list of words for sentence
     """
     # reomve white space
-    string = re.sub(r'\s+', ' ', sentence)
+    string = re.sub(r"\s+", " ", sentence)
     # remove punctuation
     string = re.sub(r"[^a-zA-Z0-9]", " ", string)
     # make lower case
     string = string.lower()
     # toeknize
-    words  = string.split()
+    words = string.split()
     # remove stopwords
     stopwords = set("stop")
     words = [word for word in words if word not in stopwords]
@@ -150,14 +151,13 @@ def cosine_similarity2(v, w):
     return np.dot(v, w) / np.sqrt(np.dot(v, v) * np.dot(w, w))
 
 
-def preplexity(A:np.array,Y:np.array) -> float:
+def preplexity(A: np.array, Y: np.array) -> float:
     """
     Calcualte preplexity as entropy **2
     """
     m = len(A)
-    cost = -(1.0/m) * np.sum(Y*np.log(A) + (1-Y)*np.log(1-A))
+    cost = -(1.0 / m) * np.sum(Y * np.log(A) + (1 - Y) * np.log(1 - A))
     return cost ** 2
-    
 
 
 docA = "The cat sat on my face"

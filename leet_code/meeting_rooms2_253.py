@@ -1,6 +1,7 @@
 from typing import List
 from heapq import *
 
+
 def minMeetingRooms(intervals: List[List[int]]) -> int:
     """
     Given an array of meeting time intervals intervals where intervals[i] = [starti, endi], return the minimum number of conference rooms required.
@@ -18,7 +19,7 @@ def minMeetingRooms(intervals: List[List[int]]) -> int:
     return len(heap)
 
 
-intervals = [[0,30],[5,10],[15,20]]
+intervals = [[0, 30], [5, 10], [15, 20]]
 assert minMeetingRooms(intervals) == 2
-intervals = [[7,10],[2,4]]
+intervals = [[7, 10], [2, 4]]
 assert minMeetingRooms(intervals) == 1

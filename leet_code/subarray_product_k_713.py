@@ -1,4 +1,3 @@
-
 def numSubarrayProductLessThanK(self, nums: List[int], k: int) -> int:
     """
     Given an array of integers nums and an integer k, return the number of contiguous subarrays where the product of all the elements in the subarray is strictly less than k.
@@ -18,5 +17,5 @@ def numSubarrayProductLessThanK(self, nums: List[int], k: int) -> int:
     return ans
 
 
-assert numSubarrayProductLessThanK([10,5,2,6], 100) == 8
-assert numSubarrayProductLessThanK([1,2,3],0) == 0
+assert numSubarrayProductLessThanK([10, 5, 2, 6], 100) == 8
+assert numSubarrayProductLessThanK([1, 2, 3], 0) == 0

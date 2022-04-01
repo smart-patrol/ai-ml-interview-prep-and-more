@@ -97,7 +97,11 @@ def test_count_tweets(target):
             successful_cases += 1
         except:
             failed_cases.append(
-                {"name": test_case["name"], "expected": dict, "got": type(result),}
+                {
+                    "name": test_case["name"],
+                    "expected": dict,
+                    "got": type(result),
+                }
             )
             print(
                 f"Wrong output type for count_tweets function. \n\tExpected: {failed_cases[-1].get('expected')}.\n\tGot: {failed_cases[-1].get('got')}."
@@ -215,7 +219,11 @@ def test_train_naive_bayes_bk(target, freqs, train_x, train_y):
             successful_cases += 1
         except:
             failed_cases.append(
-                {"name": test_case["name"], "expected": dict, "got": type(result2),}
+                {
+                    "name": test_case["name"],
+                    "expected": dict,
+                    "got": type(result2),
+                }
             )
             print(
                 f"Wrong output type for loglikelihood. \n\tExpected: {failed_cases[-1].get('expected')}.\n\tGot: {failed_cases[-1].get('got')}."
@@ -344,7 +352,11 @@ def test_train_naive_bayes(target, freqs, train_x, train_y):
             successful_cases += 1
         except:
             failed_cases.append(
-                {"name": test_case["name"], "expected": dict, "got": type(result2),}
+                {
+                    "name": test_case["name"],
+                    "expected": dict,
+                    "got": type(result2),
+                }
             )
             print(
                 f"Wrong output type for loglikelihood. \n\tExpected: {failed_cases[-1].get('expected')}.\n\tGot: {failed_cases[-1].get('got')}."

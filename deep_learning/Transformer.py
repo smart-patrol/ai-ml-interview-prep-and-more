@@ -13,11 +13,10 @@ class FeedForward(nn.Module):
             `d_ff`: hidden dimension of feed forward layer
             `dropout`: ropout rate, default 0.1
         """
-        super(FeedForward, self).__init__() 
+        super(FeedForward, self).__init__()
         self.linear_1 = nn.Linear(d_model, d_ff)
         self.dropout = nn.Dropout(dropout)
         self.linear_2 = nn.Linear(d_ff, d_model)
-
 
     def forward(self, x: torch.FloatTensor) -> torch.FloatTensor:
         """
@@ -32,7 +31,9 @@ class FeedForward(nn.Module):
         x = self.linear_2(x)
         return x
 
+
 # net = FeedForward(10, 100, 0.1)
+
 
 class LayerNorm(nn.Module):
     def __init__(self, features: int, eps: float = 1e-6):
@@ -46,7 +47,6 @@ class LayerNorm(nn.Module):
         mean = x.mean(-1, keepdim=True)
         std = x.std(-1, keepdim=True)
         return self.a * (x - mean) / (std + self.eps) + self.b
-
 
 
 class MultiHeadAttention(nn.Module):
@@ -64,11 +64,13 @@ class MultiHeadAttention(nn.Module):
         self.attn = None
         self.dropout = nn.Dropout(p=dropout)
 
-    def forward(self, query: torch.FloatTensor, 
-                key: torch.FloatTensor, 
-                value: torch.FloatTensor,
-                mask: Optional[torch.ByteTensor] = None
-                ) -> torch.FloatTensor:
+    def forward(
+        self,
+        query: torch.FloatTensor,
+        key: torch.FloatTensor,
+        value: torch.FloatTensor,
+        mask: Optional[torch.ByteTensor] = None,
+    ) -> torch.FloatTensor:
         """
         Args:
             `query`: shape (batch_size, max_len, d_model)
@@ -82,12 +84,14 @@ class MultiHeadAttention(nn.Module):
         if mask is not None:
             # Same mask applied to all h heads. B*1*1*L
             mask = mask.unsqueeze(1).unsqueeze(1)
-        
+
         batch_size = query.size(0)
 
         # 1) Do all the linear projections in batch from d_model => h x d_k
-        query, key, value = [l(x).view(batch_size, -1, self.h, self.d_k).transpose(1, 2)
-                             for l, x in zip(self.linears, (query, key, value))]
+        query, key, value = [
+            l(x).view(batch_size, -1, self.h, self.d_k).transpose(1, 2)
+            for l, x in zip(self.linears, (query, key, value))
+        ]
 
         # 2) Apply attention on all the projected vectors in batch.
         # x: B x H x L x D_v
@@ -96,7 +100,8 @@ class MultiHeadAttention(nn.Module):
         # 3) "Concat" using a view and apply a final linear.
         x = x.transpose(1, 2).contiguous().view(batch_size, -1, self.h * self.d_k)
         return self.linears[-1](x)
-        
+
+
 class SkipConnection(nn.Module):
     """
     A residual connection followed by a layer norm.
@@ -108,10 +113,9 @@ class SkipConnection(nn.Module):
         self.norm = LayerNorm(size)
         self.dropout = nn.Dropout(dropout)
 
-    def forward(self, 
-                x: torch.FloatTensor, 
-                sublayer: Union[MultiHeadAttention, FeedForward]
-                ) -> torch.FloatTensor:
+    def forward(
+        self, x: torch.FloatTensor, sublayer: Union[MultiHeadAttention, FeedForward]
+    ) -> torch.FloatTensor:
         """Apply residual connection to any sublayer with the same size."""
         return x + self.dropout(sublayer(self.norm(x)))
 
@@ -119,14 +123,24 @@ class SkipConnection(nn.Module):
 class EncoderLayer(nn.Module):
     """Encoder is made up of self-attn and feed forward"""
 
-    def __init__(self, size: int, self_attn: MultiHeadAttention, feed_forward: FeedForward, dropout: float):
+    def __init__(
+        self,
+        size: int,
+        self_attn: MultiHeadAttention,
+        feed_forward: FeedForward,
+        dropout: float,
+    ):
         super(EncoderLayer, self).__init__()
         self.self_attn = self_attn
         self.feed_forward = feed_forward
-        self.sublayer = nn.ModuleList([copy.deepcopy(SkipConnection(size, dropout)) for _ in range(2)])
+        self.sublayer = nn.ModuleList(
+            [copy.deepcopy(SkipConnection(size, dropout)) for _ in range(2)]
+        )
         self.size = size
 
-    def forward(self, x: torch.FloatTensor, mask: torch.ByteTensor) -> torch.FloatTensor:
+    def forward(
+        self, x: torch.FloatTensor, mask: torch.ByteTensor
+    ) -> torch.FloatTensor:
         x = self.sublayer[0](x, lambda x: self.self_attn(x, x, x, mask))
         return self.sublayer[1](x, self.feed_forward)
 
@@ -139,7 +153,9 @@ class Encoder(nn.Module):
         self.layers = nn.ModuleList([copy.deepcopy(layer) for _ in range(N)])
         self.norm = LayerNorm(layer.size)
 
-    def forward(self, x: torch.FloatTensor, mask: torch.ByteTensor) -> torch.torch.FloatTensor:
+    def forward(
+        self, x: torch.FloatTensor, mask: torch.ByteTensor
+    ) -> torch.torch.FloatTensor:
         """Pass the input (and mask) through each layer in turn."""
         for layer in self.layers:
             x = layer(x, mask)
@@ -156,12 +172,20 @@ class TransformerEncoder(nn.Module):
         `dropout`: dropout rate, default 0.1
     """
 
-    def __init__(self, d_model: int, d_ff: int, n_heads: int = 1, n_layers: int = 1,
-                 dropout: float = 0.1):
+    def __init__(
+        self,
+        d_model: int,
+        d_ff: int,
+        n_heads: int = 1,
+        n_layers: int = 1,
+        dropout: float = 0.1,
+    ):
         super(TransformerEncoder, self).__init__()
         self.multi_headed_attention = MultiHeadAttention(n_heads, d_model, dropout)
         self.feed_forward = FeedForward(d_model, d_ff, dropout)
-        self.encoder_layer = EncoderLayer(d_model, self.multi_headed_attention, self.feed_forward, dropout)
+        self.encoder_layer = EncoderLayer(
+            d_model, self.multi_headed_attention, self.feed_forward, dropout
+        )
         self.encoder = Encoder(self.encoder_layer, n_layers)
         self.reset_parameters()
 
@@ -170,5 +194,7 @@ class TransformerEncoder(nn.Module):
             if p.dim() > 1:
                 nn.init.xavier_uniform_(p)
 
-    def forward(self, x: torch.FloatTensor, mask: torch.ByteTensor) -> torch.FloatTensor:
+    def forward(
+        self, x: torch.FloatTensor, mask: torch.ByteTensor
+    ) -> torch.FloatTensor:
         return self.encoder(x, mask)

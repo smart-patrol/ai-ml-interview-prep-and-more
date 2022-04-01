@@ -4,7 +4,7 @@ from collections import Counter
 
 def minWindow(s: str, t: str) -> str:
     """Given two strings s and t of lengths m and n respectively, return the minimum window substring of s such that every character in t (including duplicates) is included in the window. If there is no such substring, return the empty string ''.
-    
+
     The testcases will be generated such that the answer is unique.
     A substring is a contiguous sequence of characters within the string.
     """
@@ -13,7 +13,7 @@ def minWindow(s: str, t: str) -> str:
     t_count = Counter(t)
     start = 0
     end = 0
-    min_len = float('inf')
+    min_len = float("inf")
     min_start = 0
     min_end = 0
     count = 0
@@ -38,4 +38,3 @@ def minWindow(s: str, t: str) -> str:
                 min_start = start
                 min_end = end
         end += 1
-        

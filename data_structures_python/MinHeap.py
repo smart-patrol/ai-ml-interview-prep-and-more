@@ -4,7 +4,7 @@ class MinHeap:
 
     def insert(self, val):
         self.heap.append(val)
-        self.__percolateUp(len(self.heap)-1)
+        self.__percolateUp(len(self.heap) - 1)
 
     def getMin(self):
         if self.heap:
@@ -26,7 +26,7 @@ class MinHeap:
             return None
 
     def __percolateUp(self, index):
-        parent = (index-1)//2
+        parent = (index - 1) // 2
         if index <= 0:
             return
         elif self.heap[parent] > self.heap[index]:
@@ -51,5 +51,5 @@ class MinHeap:
 
     def buildHeap(self, arr):
         self.heap = arr
-        for i in range(len(arr)-1, -1, -1):
+        for i in range(len(arr) - 1, -1, -1):
             self.__minHeapify(i)

@@ -1,12 +1,13 @@
 from DoublyLinkedList import DoublyLinkedList
 
+
 class Queue:
     def __init__(self) -> None:
         self.items = DoublyLinkedList()
 
     def is_empty(self) -> bool:
         return self.items.length == 0
-    
+
     def front(self):
         if self.is_empty():
             return None
@@ -27,7 +28,7 @@ class Queue:
         return self.items.remove_head()
 
 
-if __name__ == "__main__" :
+if __name__ == "__main__":
     queue_obj = Queue()
     print("queue.enqueue(2);")
     queue_obj.enqueue(2)
@@ -39,9 +40,9 @@ if __name__ == "__main__" :
     queue_obj.enqueue(8)
     print("queue.enqueue(10);")
     queue_obj.enqueue(10)
-    
+
     queue_obj.print_list()
-    
+
     print("is_empty(): " + str(queue_obj.is_empty()))
     print("front(): " + str(queue_obj.front()))
     print("rear(): " + str(queue_obj.rear()))

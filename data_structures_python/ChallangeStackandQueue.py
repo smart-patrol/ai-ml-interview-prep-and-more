@@ -6,11 +6,11 @@ from Stack import Stack
 # 2.Pop Stack elements and enqueue them at the end of queue
 # 3.Dequeue queue elements till "k" and append them at the end of queue
 
+
 def reverseK(queue: Queue, k: int) -> Queue:
 
     if queue.is_empty() is True or k > queeu.size() or k < 0:
         return None
-
 
     stack = Stack()
     for i in range(k):
