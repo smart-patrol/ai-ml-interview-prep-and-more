@@ -1,0 +1,19 @@
+{
+    "TableName": "TerraformStateLoc",
+    "KeySchema": [
+        {
+            "AttributeName": "LockID",
+            "KeyType": "HASH"
+        },
+    ],
+    "AttributeDefinitions": [
+        {
+            "AttributeName": "Artist",
+            "AttributeType": "S"
+        },
+    ],
+    "ProvisionedThroughput": {
+        "ReadCapacityUnits": 5,
+        "WriteCapacityUnits": 5
+    }
+}
